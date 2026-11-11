@@ -1,0 +1,1 @@
+{"schemaVersion":2,"mediaType":"application/vnd.oci.image.index.v1+json","manifests":[{"mediaType":"application/vnd.oci.image.index.v1+json","digest":"sha256:8eac61f2a45bcc341d3e5b83fbbc06b981538beccbcaadda1af7197e1ffa0dc4","size":856,"annotations":{"io.containerd.image.name":"docker.io/library/pyrit-bench-sc3098:1.0","org.opencontainers.image.ref.name":"1.0"}}]}

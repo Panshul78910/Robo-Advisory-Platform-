@@ -1,0 +1,35 @@
+# PyRIT-Bench for SC3098. Start it from this folder with:  docker compose up
+# (First load the app image once; see "User guide", Getting started.)
+services:
+  pyrit-bench:
+    image: pyrit-bench-sc3098:1.0
+    init: true
+    ports:
+      - "127.0.0.1:5002:5000"   # the app:            http://127.0.0.1:5002
+      - "127.0.0.1:6080:6080"   # the capture window: http://127.0.0.1:6080/vnc.html
+    environment:
+      DISPLAY: :99
+      HOST: 0.0.0.0
+      PORT: 5000
+      APP_PUBLIC_URL: http://localhost:5002
+      IN_DOCKER: "1"
+      # Names the app uses in its messages for your settings file and start guide.
+      SETTINGS_FILE_NAME: .env
+      JUDGE_GUIDE_NAME: "User guide, Getting started, Step 4"
+      ADDRESS_GUIDE_NAME: "User guide, Getting started, Step 5"
+    env_file:
+      - .env
+    # Lets the app reach a bot running on your laptop at http://host.docker.internal:PORT
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./my-results:/app/instance   # your targets and benchmarks are kept here
+    shm_size: 1gb
+
+# NTU's HPC/judge lives on 172.21.0.0/16. If Docker claims that range,
+# the container cannot reach the judge and the dashboard shows APIConnectionError.
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16

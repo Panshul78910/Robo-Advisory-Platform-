@@ -1,0 +1,16 @@
+.env
+**/.env
+!**/.env.example
+!**/.env.mock
+.venv/
+venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+**/node_modules/
+**/dist/
+blobs/
+__MACOSX/
+_pull-backup-*/
+**/.git-team-backup/
+*CONFIDENTIAL*

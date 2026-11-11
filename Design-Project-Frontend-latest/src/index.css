@@ -1,0 +1,1001 @@
+/* =========================================================================
+   Design tokens
+   Subject: an internal financial-advisory oversight console — the product
+   of record for compliance/audit trust, used by both retail clients and
+   back-office officers. The aesthetic borrows from bank statements and
+   ledgers (hairline rules, tabular figures, structured rows) rather than
+   the generic rounded-card SaaS kit — appropriate because the entire job
+   of this product is to make numeric decisions legible and auditable.
+   ========================================================================= */
+
+:root {
+  /* Colour: cool sage-paper ground, deep teal-ink text, muted brass accent
+     reserved for the brand mark only. Status colours are functional and
+     used consistently for confidence/decision states across both views. */
+  --paper: #eef0ea;
+  --paper-raised: #f7f8f4;
+  --ink: #16212b;
+  --ink-soft: #4b5a61;
+  --rule: #cdd2c2;
+  --rule-strong: #9aa08c;
+  --brass: #a8792b;
+
+  --status-good: #2f6f5e;
+  --status-good-bg: #e3ece7;
+  --status-warn: #a8641c;
+  --status-warn-bg: #f3e9d8;
+  --status-bad: #a23e34;
+  --status-bad-bg: #f3e1de;
+  --status-neutral: #5c6470;
+  --status-neutral-bg: #e5e6e1;
+
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-ui: "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: var(--space-4);
+}
+
+h3 {
+  font-size: 16px;
+}
+
+p {
+  margin: 0 0 var(--space-3) 0;
+  max-width: 68ch;
+}
+
+a {
+  color: var(--status-good);
+}
+
+button {
+  font-family: var(--font-ui);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------- shell */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* One viewport tall and pinned, so a long page (e.g. a growing chat) scrolls
+   past it instead of stretching it and pushing Log out off-screen. */
+.sidebar {
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--space-5) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--paper);
+}
+
+.brand-rule {
+  color: var(--brass);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sidebar-nav a,
+.sidebar-nav button.nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: rgba(238, 240, 234, 0.72);
+  font-size: 14px;
+  padding: var(--space-3) var(--space-2);
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sidebar-nav a.active,
+.sidebar-nav a:hover,
+.sidebar-nav button.nav-item:hover {
+  background: rgba(238, 240, 234, 0.08);
+  color: var(--paper);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(238, 240, 234, 0.16);
+  padding-top: var(--space-4);
+  font-size: 13px;
+  color: rgba(238, 240, 234, 0.6);
+}
+
+.sidebar-footer strong {
+  display: block;
+  color: var(--paper);
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.sidebar-footer button {
+  margin-top: var(--space-3);
+  background: none;
+  border: 1px solid rgba(238, 240, 234, 0.3);
+  color: var(--paper);
+  padding: var(--space-2) var(--space-3);
+  font-size: 13px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sidebar-footer button:hover {
+  background: rgba(238, 240, 234, 0.1);
+}
+
+.main {
+  padding: var(--space-6) var(--space-7);
+  max-width: 1080px;
+}
+
+.page-header {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.page-header p {
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------- ledger --
+   The core structural device: a bordered panel with a title row and
+   hairline-separated content, standing in for the generic rounded card. */
+
+.RoboAdvisor {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  margin-bottom: var(--space-6);
+}
+
+.RoboAdvisor-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.RoboAdvisor-head h2 {
+  margin-bottom: 0;
+}
+
+.RoboAdvisor-body {
+  padding: var(--space-5);
+}
+
+.RoboAdvisor-body.tight {
+  padding: 0;
+}
+
+.RoboAdvisor-columns {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  /* Stacked above the content on narrow screens: let it scroll away normally. */
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+  .RoboAdvisor-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------- stats */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.stat {
+  padding: var(--space-5);
+  border-right: 1px solid var(--rule);
+}
+
+.stat:last-child {
+  border-right: none;
+}
+
+.stat::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--brass);
+  margin-bottom: var(--space-3);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: var(--space-2);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------- table */
+
+table.RoboAdvisor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+}
+
+table.RoboAdvisor-table th {
+  text-align: left;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+table.RoboAdvisor-table td {
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--rule);
+  font-variant-numeric: tabular-nums;
+  /* break-word (not anywhere) wraps long values like emails without letting
+     the table squeeze columns until short words split mid-character. */
+  overflow-wrap: break-word;
+  vertical-align: top;
+}
+
+table.RoboAdvisor-table tr:last-child td {
+  border-bottom: none;
+}
+
+table.RoboAdvisor-table th.num,
+table.RoboAdvisor-table td.num {
+  text-align: right;
+}
+
+table.RoboAdvisor-table td.num {
+  white-space: nowrap;
+}
+
+/* Side-by-side panels: let a wide table scroll inside its column, and
+   tighten cell padding so it rarely has to. */
+.RoboAdvisor-columns > * {
+  min-width: 0;
+}
+
+.RoboAdvisor-columns table.RoboAdvisor-table th,
+.RoboAdvisor-columns table.RoboAdvisor-table td {
+  padding: var(--space-3) var(--space-2);
+}
+
+/* ------------------------------------------------------------- status --
+   One consistent pill system used everywhere a decision, confidence, or
+   status needs to be communicated at a glance. */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: var(--font-ui);
+}
+
+.pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.pill.good {
+  color: var(--status-good);
+  background: var(--status-good-bg);
+}
+
+.pill.warn {
+  color: var(--status-warn);
+  background: var(--status-warn-bg);
+}
+
+.pill.bad {
+  color: var(--status-bad);
+  background: var(--status-bad-bg);
+}
+
+.pill.neutral {
+  color: var(--status-neutral);
+  background: var(--status-neutral-bg);
+}
+
+/* -------------------------------------------------------------- forms */
+
+.field {
+  margin-bottom: var(--space-4);
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: var(--space-2);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  padding: var(--space-3);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.btn {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--status-good);
+  border-color: var(--status-good);
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn.secondary:hover {
+  background: var(--rule);
+  color: var(--ink);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.radio-row {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.radio-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------------- login */
+
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+}
+
+.login-panel {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  padding: var(--space-7);
+}
+
+.login-panel .brand-mark {
+  color: var(--ink);
+  font-size: 30px;
+}
+
+.login-panel p.tagline {
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-top: var(--space-1);
+}
+
+.error-text {
+  color: var(--status-bad);
+  font-size: 13.5px;
+  margin-bottom: var(--space-4);
+}
+
+.demo-creds {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.demo-creds table {
+  width: 100%;
+  margin-top: var(--space-2);
+  border-collapse: collapse;
+}
+
+.demo-creds td {
+  padding: 3px 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+/* ------------------------------------------------------------- extras */
+
+.disclosure-box {
+  border-left: 3px solid var(--status-warn);
+  background: var(--status-warn-bg);
+  padding: var(--space-4) var(--space-5);
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+.disclosure-box strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.disclosure-box .clause {
+  margin-bottom: var(--space-2);
+}
+
+.disclosure-box .clause:last-child {
+  margin-bottom: 0;
+}
+
+.source-list {
+  margin-top: var(--space-3);
+  font-size: 13px;
+}
+
+.source-item {
+  padding: var(--space-3);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  margin-bottom: var(--space-2);
+}
+
+.source-item .source-meta {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.source-item .source-text {
+  color: var(--ink-soft);
+  font-style: italic;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-height: 160px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.chat-turn {
+  margin-bottom: var(--space-5);
+}
+
+/* ---------------------------------------------------------- chat bubbles --
+   Both chats (risk conversation .msg, Q&A .chat-question/.chat-answer) use
+   one bubble language: paper bubbles with a hairline rule, the client's on the
+   right and RoboAdvice's on the left, each with a tighter "tail" corner toward
+   its side. */
+.chat-question,
+.msg.user {
+  width: fit-content;
+  max-width: 78%;
+  margin: 0 0 var(--space-3) auto;
+  padding: var(--space-3) var(--space-4);
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px 14px 4px 14px;
+  overflow-wrap: anywhere;
+}
+
+.chat-answer,
+.msg:not(.user) {
+  width: fit-content;
+  max-width: 86%;
+  margin-right: auto;
+  padding: var(--space-4);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 14px 14px 14px 4px;
+}
+
+.chat-question .who,
+.chat-answer .who,
+.msg .who {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.chat-question .who,
+.msg.user .who {
+  color: var(--ink-soft);
+}
+
+.chat-answer .who,
+.msg:not(.user) .who {
+  color: var(--status-good);
+}
+
+.chat-answer.typing,
+.msg.typing {
+  width: fit-content;
+  padding: var(--space-3) var(--space-4);
+}
+
+/* Inner blocks of an answer pick up a softer corner to sit inside the bubble. */
+.chat-answer .callout,
+.chat-answer .source-item {
+  border-radius: 6px;
+}
+
+/* Paragraphs and lists share one measure, so the right edge isn't ragged. */
+.chat-answer p {
+  max-width: none;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.chat-input-row input {
+  flex: 1;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--rule-strong);
+  margin-bottom: var(--space-6);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tab-btn.active {
+  color: var(--ink);
+  border-bottom-color: var(--brass);
+  font-weight: 500;
+}
+
+.escalation-item {
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.escalation-item .meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: var(--space-3);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.block-text {
+  max-height: 220px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: var(--space-3);
+  margin: 0 0 var(--space-3);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.escalation-item textarea {
+  max-height: 180px;
+  overflow: auto;
+  resize: vertical;
+}
+
+.filter-row {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.filter-row .field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.empty-state {
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.access-denied {
+  padding: var(--space-7);
+}
+
+.toast {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--space-4) var(--space-5);
+  font-size: 13.5px;
+  border-left: 3px solid var(--brass);
+  max-width: 320px;
+  z-index: 50;
+}
+
+/* =========================================================================
+   Additions for the live-backend screens
+   ========================================================================= */
+.hint { color: var(--ink-soft); font-size: 12.5px; margin-top: 4px; }
+.hint-light { color: rgba(238, 240, 234, 0.6); font-size: 12px; }
+
+.callout {
+  border: 1px solid var(--rule-strong);
+  border-left-width: 4px;
+  background: var(--paper-raised);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-3) 0;
+  font-size: 14px;
+}
+.callout.good { border-color: var(--status-good); background: var(--status-good-bg); }
+.callout.warn { border-color: var(--status-warn); background: var(--status-warn-bg); }
+.callout.bad { border-color: var(--status-bad); background: var(--status-bad-bg); }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.chip {
+  font: inherit; font-size: 13px; padding: 5px 12px; cursor: pointer;
+  background: var(--paper-raised); color: var(--ink);
+  border: 1px solid var(--rule-strong); border-radius: 999px;
+}
+.chip:hover:not(:disabled) { background: var(--paper); border-color: var(--ink); }
+.chip:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 var(--space-5); margin-bottom: var(--space-3); }
+
+.tbl-scroll { overflow-x: auto; }
+.pre {
+  font-family: var(--font-mono); font-size: 12px; background: var(--paper);
+  border: 1px solid var(--rule); padding: var(--space-3);
+  overflow: auto; max-height: 280px;
+  white-space: pre-wrap; word-break: break-word; margin: var(--space-2) 0;
+}
+
+.linklike {
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--status-good); text-decoration: underline; font: inherit;
+}
+
+.msg-list { display: flex; flex-direction: column; gap: var(--space-3); max-height: 460px; overflow-y: auto; margin-bottom: var(--space-3); }
+.msg { padding: var(--space-3) var(--space-4); overflow-wrap: anywhere; word-break: break-word; }
+.msg.user { align-self: flex-end; margin-bottom: 0; }
+.msg:not(.user) { align-self: flex-start; }
+
+.sidebar-date { margin: var(--space-4) 0; padding-top: var(--space-4); border-top: 1px solid rgba(238, 240, 234, 0.16); font-size: 13px; color: var(--paper); }
+.sidebar-date strong { display: block; margin-bottom: var(--space-2); font-family: var(--font-mono); }
+.sidebar-date input {
+  width: 100%; padding: 5px 8px; font: inherit; font-size: 13px; margin-bottom: var(--space-2);
+  background: rgba(238, 240, 234, 0.06); color: var(--paper);
+  border: 1px solid rgba(238, 240, 234, 0.3); border-radius: 3px;
+  color-scheme: dark; /* light calendar icon on the dark sidebar */
+  transition: border-color var(--dur, 200ms) ease;
+}
+.sidebar-date input:hover,
+.sidebar-date input:focus { border-color: rgba(238, 240, 234, 0.6); }
+.sidebar-date button {
+  width: 100%; background: none; color: var(--paper); cursor: pointer; font-size: 13px;
+  border: 1px solid rgba(238, 240, 234, 0.3); border-radius: 3px; padding: 6px;
+}
+.sidebar-date button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); margin: var(--space-4) 0; }
+.p-card { border: 1px solid var(--rule-strong); background: var(--paper-raised); padding: var(--space-4); }
+.p-card.closed { background: var(--paper); border-style: dashed; }
+.p-code { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
+.p-name { font-family: var(--font-display); font-size: 17px; margin: 2px 0 var(--space-2); }
+
+.quiz-q { border: none; border-top: 1px solid var(--rule); padding: var(--space-3) 0; margin: 0; }
+.quiz-q legend { font-weight: 500; padding: 0; }
+.quiz-opt { display: block; padding: 3px 0; font-size: 14px; cursor: pointer; }
+
+details.source-item > summary { list-style: none; }
+details.source-item > summary::-webkit-details-marker { display: none; }
+details.source-item > summary::before { content: "▸ "; }
+details.source-item[open] > summary::before { content: "▾ "; }
+
+.demo-creds button.linklike { font-size: inherit; }
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .main { padding: var(--space-4); }
+  .msg:not(.user),
+  .chat-answer { max-width: 100%; }
+  .chat-question,
+  .msg.user { max-width: 90%; }
+  .login-screen { padding: var(--space-4); }
+  .login-panel { padding: var(--space-6) var(--space-5); }
+}
+
+/* =========================================================================
+   Motion & interaction polish
+   Small, quiet feedback only — same palette, same square ledger geometry.
+   The global prefers-reduced-motion rule above switches all of this off.
+   ========================================================================= */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur: 200ms;
+}
+
+::selection { background: var(--status-warn-bg); color: var(--ink); }
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Page content settles in on navigation. `backwards` leaves no transform
+   behind, so position: fixed children (the toast) aren't trapped. */
+.main { animation: rise-in 320ms var(--ease-out) backwards; }
+.main > .RoboAdvisor:nth-of-type(2) { animation: rise-in 320ms var(--ease-out) 40ms backwards; }
+.main > .RoboAdvisor:nth-of-type(3) { animation: rise-in 320ms var(--ease-out) 80ms backwards; }
+
+/* New chat messages and answers appear instead of popping in. */
+.msg,
+.chat-turn,
+.chat-answer,
+.callout { animation: rise-in var(--dur) var(--ease-out) backwards; }
+
+.toast { animation: rise-in 260ms var(--ease-out) backwards; }
+
+/* Sidebar: smooth hover, and a brass rule marking the current page. */
+.sidebar-nav a,
+.sidebar-nav button.nav-item,
+.sidebar-footer button,
+.sidebar-date button {
+  transition: background-color var(--dur) ease, color var(--dur) ease, box-shadow var(--dur) ease;
+}
+.sidebar-nav a.active { box-shadow: inset 2px 0 0 var(--brass); }
+.sidebar-date button:hover:not(:disabled) { background: rgba(238, 240, 234, 0.1); }
+
+/* Buttons: eased colour change plus a slight press. */
+.btn,
+.chip,
+.tab-btn,
+.linklike {
+  transition: background-color var(--dur) ease, border-color var(--dur) ease,
+    color var(--dur) ease, transform var(--dur-fast) ease;
+}
+.btn:active:not(:disabled),
+.chip:active:not(:disabled) { transform: translateY(1px); }
+.chip:hover:not(:disabled) { background: var(--status-good-bg); border-color: var(--status-good); color: var(--status-good); }
+.tab-btn:hover:not(.active) { color: var(--ink); border-bottom-color: var(--rule-strong); }
+.linklike:hover { color: var(--ink); }
+
+/* Inputs: the chat inputs now match form fields; focus darkens the rule. */
+.chat-input-row input {
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  padding: var(--space-3);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--ink);
+}
+.field input,
+.field textarea,
+.field select,
+.chat-input-row input {
+  transition: border-color var(--dur) ease, background-color var(--dur) ease;
+}
+.field input:hover:not(:disabled),
+.field textarea:hover:not(:disabled),
+.field select:hover:not(:disabled),
+.chat-input-row input:hover:not(:disabled) { border-color: var(--ink-soft); }
+.field input:focus,
+.field textarea:focus,
+.field select:focus,
+.chat-input-row input:focus { border-color: var(--ink); background: #fff; }
+.chat-input-row input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Ledger rows and portfolio cards respond to the pointer. */
+table.RoboAdvisor-table tbody tr { transition: background-color var(--dur-fast) ease; }
+table.RoboAdvisor-table tbody tr:hover { background: var(--paper); }
+.p-card { transition: border-color var(--dur) ease, background-color var(--dur) ease; }
+.p-card:not(.closed):hover { border-color: var(--ink); }
+
+/* Expandable sources / payloads. */
+details > summary { cursor: pointer; transition: color var(--dur) ease; }
+details > summary:hover { color: var(--status-good); }
+details[open] > :not(summary) { animation: fade-in var(--dur) ease; }
+
+/* Loading: a quiet animated ellipsis instead of static dots. */
+.loading::after {
+  content: "";
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+  animation: ellipsis 1.2s steps(4, end) infinite;
+}
+@keyframes ellipsis {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75%, 100% { content: "..."; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading::after { animation: none; content: "…"; }
+}
+
+/* Conversation previews: plain text, clipped to three lines. */
+.convo-preview {
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.show-more {
+  display: block;
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+}
+
+/* Thin, on-palette scrollbars for the inner scroll areas. */
+.msg-list,
+.block-text,
+.pre,
+.source-item .source-text,
+.tbl-scroll { scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }

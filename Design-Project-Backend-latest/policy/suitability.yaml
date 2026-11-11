@@ -1,0 +1,114 @@
+# Company Suitability Policy -- machine-readable form (A.3).
+#
+# PLACEHOLDER VALUES. When Appendix E arrives, this file is edited and
+# domain/suitability/engine.py is not touched. Bump `version` on every change:
+# it is written to every decision row so a past decision can be replayed against
+# the policy that was actually in force.
+
+version: "appendix-e-placeholder-v1"
+
+# Ordered least to most risky. Portfolio codes and risk categories share this
+# ladder, so "above their assessed category" is a position comparison.
+ladder:
+  - capital_preservation
+  - conservative
+  - moderately_conservative
+  - balanced
+  - moderately_aggressive
+  - growth
+  - aggressive
+  - very_aggressive
+
+# (i) Category caps: the highest portfolio a client of each risk category may hold.
+eligibility:
+  capital_preservation:    P1
+  conservative:            P2
+  moderately_conservative: P3
+  balanced:                P4
+  moderately_aggressive:   P5
+  growth:                  P6
+  aggressive:              P7
+  very_aggressive:         P8
+
+# (ii) Overrides. Each forces a cap regardless of the computed score; the most
+# restrictive of those that fire wins. `when` is a field/op/value triple read by
+# the engine -- no expression evaluation, so the policy file cannot execute code.
+overrides:
+  - code: zero_loss_tolerance
+    when: {field: loss_tolerance, op: eq, value: zero}
+    cap: P1
+    explanation: >-
+      You told us you are not prepared to accept any loss of capital, so the
+      policy restricts you to the capital preservation portfolio.
+  - code: short_horizon
+    when: {field: investment_horizon_yrs, op: lt, value: 3}
+    cap: P2
+    explanation: >-
+      Your investment horizon is under three years, which is too short to ride
+      out a market downturn, so the policy caps you at a conservative portfolio.
+  - code: high_liquidity_needs
+    when: {field: liquidity_needs, op: eq, value: high}
+    cap: P3
+    explanation: >-
+      You may need access to this money at short notice, so the policy limits
+      you to portfolios that can be realised without a large loss.
+  - code: unstable_income
+    when: {field: income_stability, op: eq, value: unstable}
+    cap: P4
+    explanation: >-
+      Your income is recorded as unstable, so the policy holds you within a
+      balanced allocation.
+  - code: loss_up_to_10pct
+    when: {field: loss_tolerance, op: eq, value: low}
+    cap: P3
+    explanation: >-
+      You told us you could accept a loss of about ten percent, so the
+      policy caps you at a moderately conservative portfolio.
+
+# (iii) CKA gating.
+cka_gates:
+  # Portfolios needing a passed Customer Knowledge Assessment.
+  #
+  # Appendix E section 4: "Before a client may access portfolios 5-8 or any
+  # satellite ETF exposure, they must pass a short knowledge check". Rule E-4
+  # says the same from the other side -- a failed check caps at "4 - Balanced
+  # and no satellite exposure". The placeholder gated P6-P8 and capped at P5,
+  # so P5 was reachable without the check.
+  portfolios: [P5, P6, P7, P8]
+  # Any satellite ETF exposure needs CKA, at any portfolio level.
+  satellite_requires_cka: true
+  # Highest portfolio reachable without CKA.
+  non_cka_cap: P4
+  explanation: >-
+    Portfolios above P4 and any satellite ETF exposure require a completed
+    Customer Knowledge Assessment. You can take the assessment at any time.
+
+# Maximum share of the portfolio that may sit in satellite instruments, per
+# risk category. Absent means zero.
+#
+# These are Appendix E section 1, the "Satellite cap" column, keyed by the risk
+# category whose ceiling portfolio they belong to. The previous values (5, 10,
+# 15, 20, 25) were from the September placeholder and were permissive against
+# Appendix E in four of the five categories that had an entry, with
+# moderately_conservative missing entirely.
+#
+# Appendix E states the caps per PORTFOLIO (1-8) while this file keys them by
+# category. The mapping is one-to-one today -- category N's ceiling is
+# portfolio N, per Appendix E section 2 -- so the translation holds, but the
+# two are different axes and would need revisiting if the enum is renamed.
+#
+#   P1 capital_preservation    0%      P5 moderately_aggressive   5%
+#   P2 conservative            0%      P6 growth                 10%
+#   P3 moderately_conservative 5%      P7 aggressive             10%
+#   P4 balanced                5%      P8 very_aggressive        15%
+satellite_caps:
+  # Spelled out rather than left absent: Appendix E states 0% for portfolios 1
+  # and 2, which is a decision, not an omission.
+  capital_preservation: 0
+  conservative: 0
+  moderately_conservative: 5
+  balanced: 5
+  moderately_aggressive: 5
+  growth: 10
+  aggressive: 10
+  very_aggressive: 15

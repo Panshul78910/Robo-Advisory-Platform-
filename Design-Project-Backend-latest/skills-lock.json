@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-architecture-audit": {
+      "source": "Fmarzochi/everything-gemini",
+      "sourceType": "github",
+      "skillPath": "skills/architecture/agent-architecture-audit/SKILL.md",
+      "computedHash": "ca49d6a056747141e9106fb20a8161c602ef92529f8a3a6843c8956b50ed0756"
+    },
+    "analyze-agent-overlap": {
+      "source": "jburlison/metaprompts",
+      "sourceType": "github",
+      "skillPath": ".github/skills/analyze-agent-overlap/SKILL.md",
+      "computedHash": "ecbdd43cfde2fda2c147dd185013378da2d093e0b4d1332a7da751d7b353e59f"
+    }
+  }
+}

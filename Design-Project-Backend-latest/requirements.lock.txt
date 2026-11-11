@@ -1,0 +1,63 @@
+# Exact versions, captured from a known-good environment.
+#
+# Use this when someone hits a "works on my machine" problem, or to reproduce a
+# graded run:
+#
+#     pip install -r requirements.lock.txt
+#     pip install -e . --no-deps
+#
+# For normal development use requirements.txt instead -- it tracks the ranges in
+# pyproject.toml and will pick up compatible updates.
+#
+# Refresh after changing dependencies:
+#     pip freeze --exclude-editable > requirements.lock.txt
+#
+# Excludes the editable install of this project itself, and the optional `rag`
+# extras (sentence-transformers, pymupdf), which are not installed here.
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.15.0
+argon2-cffi==25.1.0
+argon2-cffi-bindings==26.1.0
+certifi==2026.7.22
+cffi==2.1.1
+click==8.5.0
+colorama==0.4.6
+fastapi==0.141.1
+greenlet==3.5.5
+grimp==3.17
+h11==0.16.0
+httpcore==1.0.9
+httptools==0.8.0
+httpx==0.28.1
+idna==3.19
+import-linter==2.15
+iniconfig==2.3.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+packaging==26.3
+pluggy==1.6.0
+psycopg==3.3.5
+psycopg-binary==3.3.5
+pycparser==3.0
+pydantic==2.13.5
+pydantic-settings==2.15.0
+pydantic_core==2.46.5
+Pygments==2.21.0
+PyJWT==2.13.0
+pytest==9.1.1
+pytest-asyncio==1.4.0
+python-dotenv==1.2.3
+python-multipart==0.0.32
+PyYAML==6.0.3
+rich==15.0.0
+roboadvisor-backend==0.1.0
+ruff==0.16.6
+SQLAlchemy==2.0.52
+starlette==1.6.0
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.3
+uvicorn==0.52.4
+watchfiles==1.2.0
+websockets==17.1

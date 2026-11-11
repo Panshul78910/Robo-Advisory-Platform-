@@ -1,0 +1,19 @@
+# Sample Bot, the practice chatbot. From this folder: docker compose up
+# It uses the HPC endpoint and key in ../.env (place the provided file there first; school network or NTU VPN).
+services:
+  brewbot:
+    build: .
+    image: brewbot-sc3098
+    ports:
+      - "127.0.0.1:${BREWBOT_PORT:-5056}:${BREWBOT_PORT:-5056}"   # this laptop only
+    env_file: ../.env
+    # Compose reads this folder's .env automatically; .env supplies the
+    # shared HPC credentials. The container must listen on its own interface.
+    environment:
+      BREWBOT_HOST: 0.0.0.0
+      BREWBOT_PORT: ${BREWBOT_PORT:-5056}
+      BREWBOT_OFFLINE: ${BREWBOT_OFFLINE:-false}
+      BREWBOT_BASE_URL: ${BREWBOT_BASE_URL:-}
+      BREWBOT_MODEL: ${BREWBOT_MODEL:-gemma-3-12b}
+      BREWBOT_API_KEY: ${BREWBOT_API_KEY:-}
+      BREWBOT_TIMEOUT: ${BREWBOT_TIMEOUT:-60}

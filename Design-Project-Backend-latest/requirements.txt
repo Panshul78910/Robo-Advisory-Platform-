@@ -1,0 +1,16 @@
+# Dependencies are declared in pyproject.toml -- that is the single source of
+# truth. This file exists so the familiar command works:
+#
+#     pip install -r requirements.txt
+#
+# It installs this project in editable mode with the dev extras (pytest, ruff,
+# import-linter), which is what you want for running the test suite.
+#
+# Deliberately a pointer rather than a copied list: a duplicated dependency list
+# drifts from pyproject.toml the first time someone adds a package to one and
+# not the other.
+#
+# For the RAG extras (sentence-transformers + pymupdf, ~2.5 GB because of torch):
+#     pip install -e ".[dev,rag]"
+#
+-e .[dev]

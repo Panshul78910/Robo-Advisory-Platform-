@@ -1,0 +1,78 @@
+[project]
+name = "roboadvisor-backend"
+version = "0.1.0"
+description = "Middle tier for the SC3098 simulated robo-advisory platform"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    # pydantic-settings silently ignores env_file without this installed.
+    "python-dotenv>=1.0",
+    "sqlalchemy>=2.0.36",
+    "psycopg[binary]>=3.2",
+    "httpx>=0.27",
+    "pyjwt>=2.9",
+    "python-multipart>=0.0.12",
+    "pyyaml>=6.0",
+    "argon2-cffi>=23.1",
+    # Exact token counts for the OpenAI backend's context budget. Optional at
+    # runtime -- without it `tokens.py` falls back to the over-counting
+    # heuristic -- but a ~40% over-count wastes retrieved chunks, so it ships.
+    "tiktoken>=0.8",
+]
+
+[project.optional-dependencies]
+rag = [
+    "sentence-transformers>=3.3",
+    "pymupdf>=1.24",
+]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+    "import-linter>=2.1",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
+markers = [
+    "integration: requires a live Postgres (DATABASE_URL); skipped otherwise",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["B008"]  # FastAPI Depends() in defaults is idiomatic
+
+# The Part D guardrails hold long detection regexes and the judge's prompt text
+# verbatim. Wrapping a regex risks splitting a character class, and reflowing a
+# classifier prompt changes the thing being graded, so the line-length rule is
+# lifted for these three files rather than their content edited to suit it.
+[tool.ruff.lint.per-file-ignores]
+"app/orchestration/guardrails.py" = ["E501"]
+"app/llm/judge.py" = ["E501"]
+"tests/unit/test_guardrails_judge.py" = ["E501"]
+
+[tool.importlinter]
+root_package = "app"
+
+# Invariant 8: the risk weights must never be reachable from prompt-building code.
+[[tool.importlinter.contracts]]
+name = "Risk weights are unreachable from orchestration and llm layers"
+type = "forbidden"
+source_modules = ["app.orchestration", "app.llm"]
+forbidden_modules = ["app.domain.risk.weights"]

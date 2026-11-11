@@ -1,0 +1,25 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+data/prices/*.csv
+.DS_Store
+data/uploads/
+
+# Generated from the database by scripts/gen_portfolio_reference.py. Committing
+# it would recreate the drift the generator exists to prevent: a second copy of
+# the Appendix E weights, maintained by hand.
+docs/corpus/platform-portfolio-reference.md
+
+# Written by scripts/fix_instrument_universe.py before it changes anything, and
+# by hand before a reset. Local safety nets, not shared state.
+backups/
+
+# Word lock files, left behind when a .docx in the corpus is open.
+~$*

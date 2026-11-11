@@ -1,0 +1,21 @@
+# Zero-install Postgres for teams without the Supabase CLI.
+# The migrations in supabase/migrations/ run unchanged against either this or
+# `supabase start` -- 000_auth_shim.sql creates the auth schema only if absent.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "54329:5432"
+    volumes:
+      - roboadvisor_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  roboadvisor_pgdata:
